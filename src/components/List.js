@@ -2,13 +2,17 @@ import React from "react";
 import LoginFormContainer from "./LoginFormContainer";
 import SignUpFormContainer from "./SignUpFormContainer";
 import { Link } from "react-router-dom";
+import Lobby from './Lobby'
+import Form from './Form'
 
 class List extends React.Component {
   render() {
     if (this.props.user !== "") {
       return (
         <div>
-          <LoginFormContainer />
+          <h3>Welcome to the lobby!</h3>
+          <p>Choose a game channel from this list or create your own with the form</p>
+          <Lobby />
         </div>
       );
     } else {
