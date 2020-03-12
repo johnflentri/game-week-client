@@ -7,7 +7,6 @@ export default class EventForm extends Component {
   }
 
   render() {
-    console.log("CreateForm PROPS", this.props);
 
     return (
       <div>

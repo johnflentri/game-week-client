@@ -2,7 +2,6 @@ import request from 'superagent'
 export const JWT = "JWT";
 export const NEW_USER = "NEW_USER";
 export const ALL_IMAGES = 'ALL_IMAGES'
-export const ALL_CHANNELS = 'ALL_CHANNELS'
 export const NEW_IMAGE = 'NEW_IMAGE'
 
 const baseUrl = "http://localhost:4000"
@@ -58,26 +57,6 @@ export const getImages = () => (dispatch, getState) => {
       .then(response => {
         console.log("From actions.js, this is response.body in the form of dispatch(action) by getImages function", response.body)
         const action = allImages(response.body)
-        dispatch(action)
-      })
-      .catch(console.error)
-  }
-}
-
-function allChannels(payload) {
-  return {
-    type: ALL_CHANNELS,
-    payload
-  }
-}
-
-export const getChannels = () => (dispatch, getState) => {
-  const state = getState()
-  const { channels } = state
-  if (!channels.length) {
-    request(`${baseUrl}/channel`)
-      .then(response => {
-        const action = allChannels(response.body)
         dispatch(action)
       })
       .catch(console.error)

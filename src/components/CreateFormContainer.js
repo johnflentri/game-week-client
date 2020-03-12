@@ -25,7 +25,6 @@ class CreateFormContainer extends React.Component {
   }
 
   render() {
-    console.log("CreateFormContainer PROPS", this.props);
     return (<CreateForm
       onSubmit={this.onSubmit}
       onChange={this.onChange}

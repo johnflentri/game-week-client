@@ -3,9 +3,8 @@ import ImageContainer from './ImageContainer'
 
 export default class Image extends Component {
   render() {
-    console.log("Image PROPS", this.props);
     return (
-      <div>
+      <div className="image">
         <ImageContainer />
       </div>
     )

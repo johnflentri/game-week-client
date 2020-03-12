@@ -9,7 +9,6 @@ class Form extends React.Component {
     event.preventDefault()
 
     try {
-      console.log("WHAT VALUE AM I SENDIG  FROM FORM", this.state.value)
       await this.props.onSubmit(this.state.value)
     } catch (error) {
       console.error(error)
@@ -27,7 +26,6 @@ class Form extends React.Component {
   }
 
   render() {
-    console.log("Form PROPS", this.props);
     return <form onSubmit={this.onSubmit}>
       <input
         type='text'
