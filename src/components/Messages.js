@@ -25,6 +25,7 @@ class Messages extends React.Component {
   }
 
   render() {
+    console.log("Messages PROPS", this.props);
     const { channel } = this.props.match.params
     console.log('channel test:', channel)
 
@@ -43,6 +44,7 @@ class Messages extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log("STATE IN MESSAGES", state)
   return {
     messages: state.messages,
   }

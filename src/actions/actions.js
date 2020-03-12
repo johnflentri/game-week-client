@@ -1,14 +1,19 @@
 import request from 'superagent'
+export const JWT = "JWT";
+export const NEW_USER = "NEW_USER";
+export const ALL_IMAGES = 'ALL_IMAGES'
+export const ALL_CHANNELS = 'ALL_CHANNELS'
+export const NEW_IMAGE = 'NEW_IMAGE'
 
 const baseUrl = "http://localhost:4000"
 
-export const JWT = "JWT";
 function loginUser(payload) {
   return {
     type: JWT,
     payload
   };
 }
+
 export const login = (email, password) => (dispatch, getState) => {
   request
     .post(`${baseUrl}/login`)
@@ -19,13 +24,14 @@ export const login = (email, password) => (dispatch, getState) => {
     })
     .catch(console.error);
 };
-export const NEW_USER = "NEW_USER";
+
 function newUser(payload) {
   return {
     type: NEW_USER,
     payload
   };
 }
+
 export const createUser = data => (dispatch, getState) => {
   request
     .post(`${baseUrl}/user`)
@@ -36,3 +42,65 @@ export const createUser = data => (dispatch, getState) => {
     })
     .catch(console.error);
 };
+
+function allImages(payload) {
+  return {
+    type: ALL_IMAGES,
+    payload
+  }
+}
+
+export const getImages = () => (dispatch, getState) => {
+  const state = getState()
+  const { imageReducer } = state
+  if (!imageReducer.length) {
+    request(`${baseUrl}/image`)
+      .then(response => {
+        console.log("From actions.js, this is response.body in the form of dispatch(action) by getImages function", response.body)
+        const action = allImages(response.body)
+        dispatch(action)
+      })
+      .catch(console.error)
+  }
+}
+
+function allChannels(payload) {
+  return {
+    type: ALL_CHANNELS,
+    payload
+  }
+}
+
+export const getChannels = () => (dispatch, getState) => {
+  const state = getState()
+  const { channels } = state
+  if (!channels.length) {
+    request(`${baseUrl}/channel`)
+      .then(response => {
+        const action = allChannels(response.body)
+        dispatch(action)
+      })
+      .catch(console.error)
+  }
+}
+
+function newImage(payload) {
+  return {
+    type: NEW_IMAGE,
+    payload
+  }
+}
+
+export const createImage = data => (dispatch, getState) => {
+  const state = getState()
+  const { userReducer } = state
+  request
+    .post(`${baseUrl}/image`)
+    .set('Authorization', `Bearer ${userReducer.jwt}`)
+    .send(data)
+    .then(response => {
+      const action = newImage(response.body)
+      dispatch(action)
+    })
+    .catch(console.error)
+}

@@ -27,6 +27,7 @@ class Form extends React.Component {
   }
 
   render() {
+    console.log("Form PROPS", this.props);
     return <form onSubmit={this.onSubmit}>
       <input
         type='text'

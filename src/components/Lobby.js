@@ -4,22 +4,26 @@ import { connect } from 'react-redux'
 import Form from './Form'
 import Messages from './Messages'
 import { Route, Link } from 'react-router-dom'
+import { getImages } from '../actions/actions'
+import { getChannels } from '../actions/actions'
+import Image from './Image'
+import CreateFormContainer from './CreateFormContainer'
 
 const baseUrl = 'http://localhost:4000'
 // const baseUrl = 'https://aqueous-island-05561.herokuapp.com'
 
-class App extends React.Component {
+class Lobby extends React.Component {
   stream = new EventSource(`${baseUrl}/stream`)
 
   componentDidMount() {
+    this.props.getImages()
+
+    // this.props.getChannels()
+
     this.stream.onmessage = (event) => {
-      // event.data is a JSON string
-      // we need a real JavaScript object to use the data
-      // To convert, use JSON.parse
-      console.log('event.data test:', event.data)
       const parsed = JSON.parse(event.data)
-      this.props.dispatch(parsed)
-      console.log('parsed test:', parsed)
+      // console.log("this is PARSED", parsed)
+      // this.props.dispatch(parsed)
     }
   }
 
@@ -28,8 +32,6 @@ class App extends React.Component {
       const response = await superagent
         .post(`${baseUrl}/message`)
         .send({ text: value })
-
-      console.log(response)
     } catch (error) {
       console.error(error)
     }
@@ -37,49 +39,53 @@ class App extends React.Component {
 
   createChannel = async (value) => {
     try {
-      console.log('WHAT VALUE IS GIVIN TO CREATECHANNEL', value)
       const response = await superagent
         .post(`${baseUrl}/channel`)
         .send({ channel: value })
-
-      console.log(response)
     } catch (error) {
       console.error(error)
     }
   }
 
   render() {
-    const channels = this
-      .props
-      .channels
-      .map(channel => <div>
-        <Link to={`/messages/${channel}`}>{channel}</Link>
-      </div>)
+    console.log("Lobby PROPS", this.props);
+    // const channel = this
+    //   .props
+    //   .channels
+    //   .map(channel => <div>
+    //     {channel.name}
+    //   </div>)
+    // {/* <Link to={`/messages/${channel}`}>{channel}</Link> */ }
     if (!this.props.channels) {
       return <main>
         <h3>Channels</h3>
+        <CreateFormContainer />
+        <Image />
         <Form onSubmit={this.createChannel} />
         {this.props.channels}
 
         <Route path='/messages/:channel' component={Messages} />
       </main>
     } else {
-      return <main><h3>hi</h3>
+      return <main><h3>Hi</h3>
+        <Image />
         <Form onSubmit={this.createChannel} />
       </main>
     }
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    channels: state.channelReducer
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//     channels: state.channels,
+//     images: state.images
+//   }
+// }
 
+const mapDispatchToProps = { getImages }
 
-// export default connect(mapStateToProps)(App);
+export default connect(null, mapDispatchToProps)(Lobby);
 
-const connector = connect(mapStateToProps)
-const connected = connector(App)
-export default connected
+// const connector = connect(mapStateToProps)
+// const connected = connector(App)
+// export default connected

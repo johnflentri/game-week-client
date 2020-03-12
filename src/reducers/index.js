@@ -1,10 +1,8 @@
 import { combineReducers } from 'redux'
 import userReducer from './user'
-import scoreReducer from './score'
-import channelReducer from './channels'
+import imageReducer from './image'
 
 export default combineReducers({
   userReducer,
-  scoreReducer,
-  channelReducer
+  imageReducer
 })

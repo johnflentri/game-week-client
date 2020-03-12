@@ -7,6 +7,7 @@ import Form from './Form'
 
 class List extends React.Component {
   render() {
+    console.log("List PROPS", this.props);
     if (this.props.user !== "") {
       return (
         <div>
